@@ -442,7 +442,7 @@ class Engine(Module):
             if protocol == 'osc':
                 self.osc_server.send(port, address, *args)
             elif protocol == 'osc.tcp':
-                self.osc_tcp_server.send(port, address, *args)
+                self.osc_tcp_server.send(liblo.Address('localhost', port, liblo.TCP), address, *args)
             elif protocol == 'osc.unix':
                 self.osc_unix_server.send(port, address, *args)
             else:
