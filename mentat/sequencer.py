@@ -1,9 +1,19 @@
+from logging import Logger
+from typing import TYPE_CHECKING
+
 from .utils import public_method, type_callback, force_mainthread
+
+if TYPE_CHECKING:
+    from engine import Engine
+
 
 class Sequencer():
     """
     Mixin class, defines methods for starting/stopping scenes.
     """
+
+    logger: Logger
+    engine: 'Engine'
 
     def __init__(self, namespace):
         self.scene_namespace = namespace
@@ -105,6 +115,12 @@ class Sequencer():
         timer = self.engine.get_scene_timer()
         if timer:
             timer.wait_next_cycle()
+
+    @public_method
+    def wait_next_beat(self, beat_div=1.0):
+        timer = self.engine.get_scene_timer()
+        if timer:
+            timer.wait_next_beat(beat_div)
 
     @public_method
     def lock(self):

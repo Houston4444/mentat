@@ -13,7 +13,7 @@ import threading
 from queue import Queue
 from pathlib import Path
 from signal import signal, SIGINT, SIGTERM
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import pyinotify
 import liblo
@@ -114,7 +114,7 @@ class Engine(Module):
         self.active_route = None
 
         self.scenes = {}
-        self.scenes_timers = {}
+        self.scenes_timers = dict[str, Timer]()
 
         self.is_running = False
         self.is_restarting = False
@@ -747,7 +747,7 @@ class Engine(Module):
         """
         return Thread.get_current().name in self.scenes_timers
 
-    def get_scene_timer(self):
+    def get_scene_timer(self) -> Optional[Timer]:
         """
         get_scene_timer()
 
